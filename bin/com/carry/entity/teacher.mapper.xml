@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.carry.entity.TeacherMapper">
+  <!-- 1、按查询结果嵌套处理 -->
+  <!-- 
+  <select id="getTeacher" resultMap="TeacherStudent">
+  	 select s.id sid, s.name sname, t.id tid, t.name tname from student s, teacher t where s.tid=t.id and t.id=#{id}
+  </select>
+  <resultMap type="Teacher" id="TeacherStudent">
+  	<id column="tid" property="id"/>
+  	<result column="tname" property="name"/>
+  	<collection property="students" ofType="Student">
+  		<id column="sid" property="id"/>
+  		<result column="sname" property="name"/>
+  	</collection>
+  </resultMap>
+   -->
+   
+   
+  <!-- 2、按查询嵌套处理 -->
+  <select id="getTeacher" resultMap="TeacherStudent">
+  	select * from teacher where id=#{id}
+  </select>
+  <resultMap type="Teacher" id="TeacherStudent">
+  	<collection column="id" property="students" javaType="ArrayList" ofType="Student" select="com.carry.entity.StudentMapper.getStudents">
+  	</collection>
+  </resultMap>
+</mapper>
